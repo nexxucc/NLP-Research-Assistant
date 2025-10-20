@@ -1,0 +1,36 @@
+# Environment
+.env
+venv/
+env/
+*.pyc
+__pycache__/
+
+# Data
+data/papers/*.pdf
+data/vectorstore/*
+data/training/*
+*.pkl
+*.bin
+
+# Models
+models/custom_embeddings/*
+models/finetuned_llm/*
+!models/.gitkeep
+
+# Outputs
+outputs/reports/*
+outputs/evaluations/*
+
+# Notebooks
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
