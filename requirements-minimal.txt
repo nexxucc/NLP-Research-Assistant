@@ -1,0 +1,27 @@
+# Minimal requirements for basic RAG functionality
+# Install these first to get the system working
+
+# Essential for basic functionality
+pypdf
+numpy
+tqdm
+python-dotenv
+
+# Google Gemini API (try without version constraints)
+google-generativeai
+
+# Sentence transformers for embeddings
+sentence-transformers
+
+# FAISS for vector search
+faiss-cpu
+
+# BM25 for hybrid search
+rank-bm25
+
+# Streamlit for UI
+streamlit
+
+# Evaluation metrics
+scikit-learn
+rouge-score

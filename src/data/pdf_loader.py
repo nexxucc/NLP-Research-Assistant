@@ -77,11 +77,12 @@ class PDFLoader:
                 page_text = page.extract_text()
 
                 if page_text.strip():  # Only add non-empty pages
+                    cleaned_text = self._clean_text(page_text)
                     pages.append({
                         'page_num': page_num,
-                        'text': self._clean_text(page_text)
+                        'text': cleaned_text
                     })
-                    full_text.append(page_text)
+                    full_text.append(cleaned_text)
 
             result = {
                 'text': '\n\n'.join(full_text),
@@ -89,7 +90,8 @@ class PDFLoader:
                 'pages': pages
             }
 
-            logger.info(f"Loaded PDF: {file_path.name} ({metadata['page_count']} pages)")
+            logger.info(
+                f"Loaded PDF: {file_path.name} ({metadata['page_count']} pages)")
             return result
 
         except Exception as e:
@@ -151,6 +153,11 @@ class PDFLoader:
         Returns:
             Cleaned text
         """
+        # IMPORTANT: Remove invalid Unicode surrogates that cause training errors
+        # This fixes UnicodeEncodeError with corrupted PDFs
+        text = text.encode(
+            'utf-8', errors='ignore').decode('utf-8', errors='ignore')
+
         # Remove multiple spaces
         text = ' '.join(text.split())
 

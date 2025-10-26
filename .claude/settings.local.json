@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//c/Users/jainv/Downloads/**)",
+      "Bash(python setup.py:*)",
+      "Bash(python -m py_compile:*)",
+      "Bash(python -c \"import sys; sys.path.insert(0, ''.''); from src.models import hybrid_retriever\")",
+      "Bash(python -c \"import sys; sys.path.insert(0, ''.''); from src.training import data_generator\")",
+      "Bash(python -c \"import sys; sys.path.insert(0, ''.''); from src.evaluation import metrics\")",
+      "Bash(python:*)",
+      "Bash(py -3.8 -m pip:*)",
+      "Bash(if exist \"data\\training\\embedding_pairs.json\" del \"data\\training\\embedding_pairs.json\")",
+      "Bash(if exist \"data\\training\\qa_pairs.json\" del \"data\\training\\qa_pairs.json\")"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

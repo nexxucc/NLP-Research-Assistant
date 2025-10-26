@@ -1,36 +1,37 @@
-# Core LLM & RAG
-langchain==0.1.0
-langchain-google-genai==0.0.5
-google-generativeai==0.3.2
-
-# Machine Learning & Transformers
-torch==2.1.2
-transformers==4.36.2
-sentence-transformers==2.2.2
-peft==0.7.1
-bitsandbytes==0.41.3
-accelerate==0.25.0
-trl==0.7.10
-
-# Vector Store & Retrieval
-faiss-cpu==1.7.4
-rank-bm25==0.2.2
+# Core utilities (install first)
+numpy
+tqdm
+python-dotenv
 
 # Data Processing
-pypdf==3.17.4
-pandas==2.1.4
-datasets==2.16.1
-numpy==1.26.3
+pypdf
+pandas
 
-# UI & Visualization
-streamlit==1.29.0
-plotly==5.18.0
+# Vector Store & Retrieval
+faiss-cpu
+rank-bm25
 
-# Utilities
-python-dotenv==1.0.0
-tqdm==4.66.1
-scikit-learn==1.4.0
+# Machine Learning & Transformers
+torch
+transformers
+sentence-transformers
 
 # Evaluation
-rouge-score==0.1.2
-nltk==3.8.1
+scikit-learn
+rouge-score
+nltk
+
+# UI
+streamlit
+
+# Fine-tuning libraries (optional, for advanced usage)
+peft
+accelerate
+trl
+
+# Google Generative AI (install separately if needed)
+# google-generativeai
+
+# Note: If google-generativeai fails, install it separately:
+# pip install google-generativeai --pre
+# or use: pip install google-generativeai --upgrade
