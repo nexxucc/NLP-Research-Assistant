@@ -1,36 +1,46 @@
 # Environment
 .env
+.env.*
+!.env.example
 venv/
 env/
-*.pyc
-__pycache__/
+.venv/
 
-# Data
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.pytest_cache/
+.mypy_cache/
+
+# Streamlit
+.streamlit/secrets.toml
+
+# Data and generated artifacts
 data/papers/*.pdf
+data/faiss_index/*
 data/vectorstore/*
+data/processed/*
 data/training/*
 *.pkl
 *.bin
+*.faiss
+*.index
 
-# Models
+# Models and generated outputs
 models/custom_embeddings/*
 models/finetuned_llm/*
-!models/.gitkeep
-
-# Outputs
 outputs/reports/*
 outputs/evaluations/*
 
 # Notebooks
 .ipynb_checkpoints/
-*.ipynb_checkpoints
 
-# IDE
+# Editor and OS
 .vscode/
 .idea/
 *.swp
 *.swo
-
-# OS
 .DS_Store
 Thumbs.db

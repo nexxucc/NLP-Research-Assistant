@@ -1,4 +1,4 @@
-# 📚 Context-Aware NLP Research Assistant
+#  Context-Aware NLP Research Assistant
 
 An advanced **Retrieval-Augmented Generation (RAG)** system for research paper analysis, featuring hybrid retrieval, semantic search, and AI-powered Q&A.
 
@@ -79,14 +79,6 @@ NLP-Research-Assistant/
 ├── models/             # Saved fine-tuned models
 └── outputs/            # Reports and evaluations
 ```
-
-## Development Phases
-
-- **Phase 1**: ✅ Baseline RAG with Gemini API
-- **Phase 2**: ⏳ Custom embedding fine-tuning
-- **Phase 3**: ⏳ Hybrid retrieval system
-- **Phase 4**: ⏳ LLM fine-tuning with QLoRA
-- **Phase 5**: ⏳ Production features and UI
 
 ## Technologies
 
