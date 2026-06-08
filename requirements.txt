@@ -30,8 +30,9 @@ accelerate
 trl
 
 # Google Generative AI (install separately if needed)
-# google-generativeai
+google-generativeai
 
 # Note: If google-generativeai fails, install it separately:
 # pip install google-generativeai --pre
 # or use: pip install google-generativeai --upgrade
+google-generativeai
