@@ -276,6 +276,7 @@ def main():
 
     # Sidebar
     with st.sidebar:
+        st.markdown("[View source on GitHub](https://github.com/nexxucc/NLP-Research-Assistant)")
         st.header("⚙️ Configuration")
 
         # API Key
