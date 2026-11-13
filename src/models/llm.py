@@ -15,6 +15,9 @@ load_dotenv()
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+# "gemini-pro" was retired by Google; the model is now configurable via GEMINI_MODEL.
+DEFAULT_GEMINI_MODEL = os.getenv("GEMINI_MODEL", "gemini-2.5-flash")
+
 class LLMHandler:
     """
     Handler for Large Language Model interactions.
@@ -25,7 +28,7 @@ class LLMHandler:
 
     def __init__(
         self,
-        model_name: str = "gemini-pro",
+        model_name: Optional[str] = None,
         temperature: float = 0.3,
         max_tokens: int = 2048,
         use_custom_model: bool = False,
@@ -35,7 +38,7 @@ class LLMHandler:
         Initialize LLM handler.
 
         Args:
-            model_name: Model identifier (e.g., "gemini-pro")
+            model_name: Model identifier (defaults to GEMINI_MODEL, else "gemini-2.5-flash")
             temperature: Sampling temperature (0.0 = deterministic, 1.0 = creative)
             max_tokens: Maximum tokens in response
             use_custom_model: Whether to use custom fine-tuned model
@@ -46,6 +49,7 @@ class LLMHandler:
             - 0.4-0.7: Balanced
             - 0.8-1.0: Creative (good for summarization)
         """
+        model_name = model_name or DEFAULT_GEMINI_MODEL
         self.model_name = model_name
         self.temperature = temperature
         self.max_tokens = max_tokens

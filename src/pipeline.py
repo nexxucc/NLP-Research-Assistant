@@ -42,7 +42,7 @@ class RAGPipeline:
         embedding_model: str = "sentence-transformers/all-MiniLM-L6-v2",
         use_custom_embeddings: bool = False,
         custom_embedding_path: str = None,
-        llm_model: str = "gemini-pro",
+        llm_model: Optional[str] = None,
         use_custom_llm: bool = False,
         custom_llm_path: str = None,
         chunk_size: int = 512,
@@ -54,7 +54,7 @@ class RAGPipeline:
 
         Args:
             embedding_model: HuggingFace embedding model name
-            llm_model: LLM model name (gemini-pro)
+            llm_model: Gemini model name (defaults to the GEMINI_MODEL env var)
             chunk_size: Size of text chunks
             chunk_overlap: Overlap between chunks
             top_k: Number of chunks to retrieve

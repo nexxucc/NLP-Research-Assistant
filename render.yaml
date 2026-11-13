@@ -1,0 +1,21 @@
+# Render Blueprint for the Streamlit app, served at nlp-research-assistant.vansh.runs-on.dev.
+services:
+  - type: web
+    name: nlp-research-assistant
+    runtime: python
+    plan: free
+    region: singapore
+    branch: master
+    # CPU-only torch first: the default Linux wheel pulls several GB of CUDA libraries.
+    buildCommand: pip install torch --index-url https://download.pytorch.org/whl/cpu && pip install -r requirements.txt
+    startCommand: streamlit run src/ui/streamlit_app.py --server.port $PORT --server.address 0.0.0.0 --server.headless true
+    healthCheckPath: /_stcore/health
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.9
+      - key: GEMINI_MODEL
+        value: gemini-2.5-flash
+      - key: GOOGLE_API_KEY
+        sync: false
+    domains:
+      - nlp-research-assistant.vansh.runs-on.dev
