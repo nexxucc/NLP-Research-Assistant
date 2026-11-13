@@ -9,7 +9,8 @@ from typing import List, Dict, Optional
 import os
 import logging
 from dotenv import load_dotenv
-import google.generativeai as genai
+from google import genai
+from google.genai import types
 
 load_dotenv()
 logging.basicConfig(level=logging.INFO)
@@ -29,6 +30,7 @@ class LLMHandler:
     def __init__(
         self,
         model_name: Optional[str] = None,
+        api_key: Optional[str] = None,
         temperature: float = 0.3,
         max_tokens: int = 2048,
         use_custom_model: bool = False,
@@ -39,6 +41,8 @@ class LLMHandler:
 
         Args:
             model_name: Model identifier (defaults to GEMINI_MODEL, else "gemini-2.5-flash")
+            api_key: Gemini API key for this handler. Falls back to GOOGLE_API_KEY.
+                Each handler holds its own client, so different users never share a key.
             temperature: Sampling temperature (0.0 = deterministic, 1.0 = creative)
             max_tokens: Maximum tokens in response
             use_custom_model: Whether to use custom fine-tuned model
@@ -60,28 +64,36 @@ class LLMHandler:
             logger.info(f"Custom model support will be added in Phase 4")
             logger.info("Falling back to Gemini for now")
 
-        # Initialize Gemini
-        api_key = os.getenv('GOOGLE_API_KEY')
-        if not api_key:
-            raise ValueError(
-                "GOOGLE_API_KEY not found in environment. "
-                "Please set it in your .env file."
-            )
-
-        genai.configure(api_key=api_key)
-
         # Configure generation parameters
-        self.generation_config = {
-            "temperature": temperature,
-            "max_output_tokens": max_tokens,
-        }
-
-        self.model = genai.GenerativeModel(
-            model_name=model_name,
-            generation_config=self.generation_config
+        self.generation_config = types.GenerateContentConfig(
+            temperature=temperature,
+            max_output_tokens=max_tokens,
         )
 
+        self._api_key = None
+        self.client = None
+        self.set_api_key(api_key or os.getenv('GOOGLE_API_KEY'))
+
         logger.info(f"Initialized LLM: {model_name}")
+
+    def set_api_key(self, api_key: Optional[str]) -> None:
+        """Point this handler at a different Gemini API key (no-op if unchanged)."""
+        if not api_key:
+            raise ValueError(
+                "No Gemini API key provided. Pass api_key or set GOOGLE_API_KEY."
+            )
+        if api_key != self._api_key:
+            self.client = genai.Client(api_key=api_key)
+            self._api_key = api_key
+
+    def generate(self, prompt: str) -> str:
+        """Send one prompt to Gemini with this handler's own key and settings."""
+        response = self.client.models.generate_content(
+            model=self.model_name,
+            contents=prompt,
+            config=self.generation_config,
+        )
+        return response.text or ""
 
     def answer_question(
         self,
@@ -124,8 +136,7 @@ class LLMHandler:
 
         # Generate answer
         try:
-            response = self.model.generate_content(prompt)
-            answer = response.text
+            answer = self.generate(prompt)
 
         except Exception as e:
             logger.error(f"Error generating answer: {str(e)}")
@@ -170,8 +181,7 @@ class LLMHandler:
         prompt = self._create_summary_prompt(text, max_length, focus)
 
         try:
-            response = self.model.generate_content(prompt)
-            return response.text
+            return self.generate(prompt)
 
         except Exception as e:
             logger.error(f"Error generating summary: {str(e)}")

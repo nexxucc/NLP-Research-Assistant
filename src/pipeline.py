@@ -43,6 +43,7 @@ class RAGPipeline:
         use_custom_embeddings: bool = False,
         custom_embedding_path: str = None,
         llm_model: Optional[str] = None,
+        api_key: Optional[str] = None,
         use_custom_llm: bool = False,
         custom_llm_path: str = None,
         chunk_size: int = 512,
@@ -55,6 +56,7 @@ class RAGPipeline:
         Args:
             embedding_model: HuggingFace embedding model name
             llm_model: Gemini model name (defaults to the GEMINI_MODEL env var)
+            api_key: Gemini API key for this pipeline (falls back to GOOGLE_API_KEY)
             chunk_size: Size of text chunks
             chunk_overlap: Overlap between chunks
             top_k: Number of chunks to retrieve
@@ -84,11 +86,12 @@ class RAGPipeline:
         if use_custom_llm and custom_llm_path:
             logger.info(f"Using custom LLM from: {custom_llm_path}")
             self.llm = LLMHandler(
+                api_key=api_key,
                 use_custom_model=True,
                 custom_model_path=custom_llm_path
             )
         else:
-            self.llm = LLMHandler(model_name=llm_model)
+            self.llm = LLMHandler(model_name=llm_model, api_key=api_key)
 
         # State
         self.retriever: Optional[FAISSRetriever] = None

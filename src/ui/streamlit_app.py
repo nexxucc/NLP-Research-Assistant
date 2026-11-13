@@ -90,9 +90,10 @@ if 'use_hybrid' not in st.session_state:
 
 
 def init_pipeline():
-    """Initialize RAG pipeline."""
+    """Initialize RAG pipeline with this session's own Gemini key."""
     with st.spinner("Initializing RAG pipeline..."):
         pipeline = RAGPipeline(
+            api_key=st.session_state.get('api_key'),
             chunk_size=512,
             chunk_overlap=50,
             top_k=5
@@ -284,8 +285,11 @@ def main():
             help="Get your API key from https://makersuite.google.com/app/apikey"
         )
 
-        if api_key:
-            os.environ['GOOGLE_API_KEY'] = api_key
+        # Keep the key in this visitor's session only. Writing it to os.environ
+        # would share it with every other visitor of the same server process.
+        st.session_state.api_key = api_key
+        if api_key and st.session_state.pipeline:
+            st.session_state.pipeline.llm.set_api_key(api_key)
 
         st.markdown("---")
 

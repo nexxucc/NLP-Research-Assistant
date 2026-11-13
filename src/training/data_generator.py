@@ -295,8 +295,8 @@ TEXT:
 Generate exactly {num_questions} questions, one per line, without numbering:"""
 
         try:
-            response = self.llm.model.generate_content(prompt)
-            questions = [q.strip() for q in response.text.strip().split('\n') if q.strip()]
+            text = self.llm.generate(prompt)
+            questions = [q.strip() for q in text.strip().split('\n') if q.strip()]
 
             # Take only requested number
             return questions[:num_questions]
